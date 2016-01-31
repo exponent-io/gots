@@ -67,8 +67,11 @@ func ConvertToString(vals ...interface{}) (string, error) {
 }
 
 func resolveTypeDeps(t reflect.Type, deps map[reflect.Type]bool) {
+	if _, ok := nativeTypes[t.Kind()]; ok {
+		return // Don't need to resolve native types
+	}
 	if _, ok := deps[t]; ok {
-		return
+		return // Already added these dependencies
 	} else {
 		deps[t] = true
 	}
@@ -77,15 +80,14 @@ func resolveTypeDeps(t reflect.Type, deps map[reflect.Type]bool) {
 		f := t.Field(i)
 		tag := tag(f)
 		if !tag.exclude {
-			if f.Type.Kind() == reflect.Struct {
+			if f.Type.Kind() == reflect.Ptr || f.Type.Kind() == reflect.Slice {
+				resolveTypeDeps(f.Type.Elem(), deps)
+			} else if f.Type.Kind() == reflect.Struct {
 				resolveTypeDeps(f.Type, deps)
-			} else if f.Type.Kind() == reflect.Slice {
-				if f.Type.Elem().Kind() == reflect.Struct {
-					resolveTypeDeps(f.Type.Elem(), deps)
-				}
 			}
 		}
 	}
+
 }
 
 func writeType(t reflect.Type, w io.Writer) error {
@@ -115,6 +117,8 @@ func typeToString(t reflect.Type) string {
 		return t.Name()
 	case reflect.Slice:
 		return typeToString(t.Elem()) + "[]"
+	case reflect.Ptr:
+		return typeToString(t.Elem())
 	default:
 		if tm, ok := nativeTypes[k]; ok {
 			return tm

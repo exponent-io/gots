@@ -24,7 +24,7 @@ type StructC struct {
 	A string
 	B []int
 	c []StructB
-	D StructA
+	D *StructA
 }
 
 func TestStructA(t *testing.T) {

@@ -11,20 +11,21 @@ import (
 )
 
 var nativeTypes map[reflect.Kind]string = map[reflect.Kind]string{
-	reflect.Bool:    "boolean",
-	reflect.Int:     "number",
-	reflect.Int8:    "number",
-	reflect.Int16:   "number",
-	reflect.Int32:   "number",
-	reflect.Int64:   "number",
-	reflect.Uint:    "number",
-	reflect.Uint8:   "number",
-	reflect.Uint16:  "number",
-	reflect.Uint32:  "number",
-	reflect.Uint64:  "number",
-	reflect.Float32: "number",
-	reflect.Float64: "number",
-	reflect.String:  "string",
+	reflect.Bool:      "boolean",
+	reflect.Int:       "number",
+	reflect.Int8:      "number",
+	reflect.Int16:     "number",
+	reflect.Int32:     "number",
+	reflect.Int64:     "number",
+	reflect.Uint:      "number",
+	reflect.Uint8:     "number",
+	reflect.Uint16:    "number",
+	reflect.Uint32:    "number",
+	reflect.Uint64:    "number",
+	reflect.Float32:   "number",
+	reflect.Float64:   "number",
+	reflect.String:    "string",
+	reflect.Interface: "any",
 }
 
 type byName []reflect.Type

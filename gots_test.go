@@ -14,10 +14,10 @@ type StructA struct {
 }
 
 type StructB struct {
-	A string    `json:"a"`
-	B []int     `json:"b"`
-	C []StructB `json:"c"`
-	D StructA   `json:"d"`
+	A interface{} `json:"a"`
+	B []int       `json:"b"`
+	C []StructB   `json:"c"`
+	D StructA     `json:"d"`
 }
 
 type StructC struct {
@@ -49,7 +49,7 @@ export interface StructA {
 }
 
 export interface StructB {
-  a: string;
+  a: any;
   b: number[];
   c: StructB[];
   d: StructA;
@@ -69,7 +69,7 @@ export interface StructA {
 }
 
 export interface StructB {
-  a: string;
+  a: any;
   b: number[];
   c: StructB[];
   d: StructA;

@@ -34,7 +34,7 @@ var genCmd = &cobra.Command{
 	Short: "generate TypeScript interfaces",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := generate.GenerateTypeScript(args, os.Stdout)
+		err := generate.GenerateTypeScript(os.Stdout, args)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v", err.Error())
 		}

@@ -18,6 +18,11 @@ func (v *typeVisitor) Visit(node ast.Node) ast.Visitor {
 	case *ast.ArrayType:
 		v.typeName = tsType(typeName(n.Elt)) + "[]"
 		return nil
+	case *ast.InterfaceType:
+		if len(n.Methods.List) == 0 {
+			v.typeName = tsType("interface{}")
+		}
+		return nil
 	case *ast.Ident:
 		v.typeName = tsType(n.Name)
 		return nil

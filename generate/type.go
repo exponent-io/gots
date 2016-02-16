@@ -16,7 +16,12 @@ func (v *typeVisitor) Visit(node ast.Node) ast.Visitor {
 
 	switch n := node.(type) {
 	case *ast.ArrayType:
-		v.typeName = tsType(typeName(n.Elt)) + "[]"
+		t := typeName(n.Elt)
+		if t == "byte" {
+			v.typeName = "Uint8Array"
+		} else {
+			v.typeName = tsType(t) + "[]"
+		}
 		return nil
 	case *ast.InterfaceType:
 		if len(n.Methods.List) == 0 {
@@ -34,11 +39,11 @@ func (v *typeVisitor) Visit(node ast.Node) ast.Visitor {
 func tsType(goType string) string {
 
 	switch goType {
-	case "string":
+	case "string", "Time":
 		return "string"
 	case "bool":
 		return "boolean"
-	case "interface{}":
+	case "interface{}", "RawMessage":
 		return "any"
 	case "int", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "float32", "float64":
 		return "number"

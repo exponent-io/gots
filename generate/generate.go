@@ -2,11 +2,24 @@ package generate
 
 import (
 	"fmt"
+	"go/ast"
 	"go/parser"
 	"go/token"
 	"io"
 	"path/filepath"
 )
+
+func DumpAst(output io.Writer, inputFileSpecs []string) error {
+	fs := token.NewFileSet()
+	for _, f := range inputFileSpecs {
+		astFile, err := parser.ParseFile(fs, f, nil, parser.ParseComments)
+		if err != nil {
+			return err
+		}
+		ast.Print(fs, astFile)
+	}
+	return nil
+}
 
 func GenerateTypeScript(output io.Writer, inputFileSpecs []string) error {
 

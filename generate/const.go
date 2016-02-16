@@ -33,9 +33,9 @@ func (v *constVisitor) Visit(node ast.Node) ast.Visitor {
 			var viz constDeclVisitor
 			ast.Walk(&viz, n)
 
-			done := make(map[string]struct{})
+			done := map[string]struct{}{"": struct{}{}, "string": struct{}{}}
 			for _, t := range viz.consts {
-				if _, ok := done[t.constType]; !ok && t.constType != "" {
+				if _, ok := done[t.constType]; !ok {
 					fmt.Fprintf(v.out, "export type %v = string;\n", t.constType)
 					done[t.constType] = struct{}{}
 				}

@@ -19,3 +19,17 @@ type Column struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
+
+type ItemValue string
+
+const (
+	ItemA ItemValue = "A"
+	ItemB           = "B"
+	ItemC           = "C"
+)
+
+type OtherValue string
+
+const OtherItem OtherValue = "Other"
+
+const StringVal = "string"

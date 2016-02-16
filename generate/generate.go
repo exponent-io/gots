@@ -5,6 +5,7 @@ import (
 	"go/parser"
 	"go/token"
 	"io"
+	"path/filepath"
 )
 
 func GenerateTypeScript(output io.Writer, inputFileSpecs []string) error {
@@ -24,12 +25,18 @@ func processFile(filename string, w io.Writer) error {
 
 	fs := token.NewFileSet()
 
-	astFile, err := parser.ParseFile(fs, filename, nil, parser.ParseComments)
+	files, err := filepath.Glob(filename)
 	if err != nil {
 		return err
 	}
 
-	writeStruct(w, fs, astFile)
-
+	for _, f := range files {
+		astFile, err := parser.ParseFile(fs, f, nil, parser.ParseComments)
+		if err != nil {
+			return err
+		}
+		writeConst(w, fs, astFile)
+		writeStruct(w, fs, astFile)
+	}
 	return nil
 }

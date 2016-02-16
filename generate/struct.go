@@ -25,18 +25,15 @@ func (v *structVisitor) Visit(node ast.Node) ast.Visitor {
 
 	switch n := node.(type) {
 	case *ast.TypeSpec:
-		fmt.Fprintf(v.out, "// %v\n", v.fileSet.Position(n.Pos()))
-		if n.Doc != nil {
-			for _, c := range n.Doc.List {
-				fmt.Fprintf(v.out, "// %v\n", c.Text)
-			}
-		}
-		fmt.Fprintf(v.out, "export interface %v {\n", n.Name)
-
 		fields := fieldSpecs(n.Type)
-		writeFieldSpecs(v.out, fields)
+		if len(fields) > 0 {
+			fmt.Fprintf(v.out, "// %v\n", v.fileSet.Position(n.Pos()))
+			fmt.Fprintf(v.out, "export interface %v {\n", n.Name)
 
-		fmt.Fprintf(v.out, "}\n\n")
+			writeFieldSpecs(v.out, fields)
+
+			fmt.Fprintf(v.out, "}\n\n")
+		}
 		return nil
 	}
 	return v
